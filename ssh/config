@@ -1,20 +1,4 @@
-Host aws
-  User ec2-user
-  HostName ec2-52-194-224-72.ap-northeast-1.compute.amazonaws.com
-  identityFile ~/.ssh/id_rsa
-
-Host edu
-	User alfree
-	HostName 133.242.171.90
-	identityFile ~/.ssh/id_rsa
-
-Host ars
-	User her.jp-ab-sol
-	HostName ssh.lolipop.jp
-	Port 2222
-
 Host github
-    # githubメインアカウント
 	User git
 	HostName github.com
 	TCPKeepAlive yes
@@ -22,17 +6,8 @@ Host github
 	identityFile ~/.ssh/id_rsa
 
 Host gitlab
-    # gitlab / メインアカウント
 	User git
 	HostName gitlab.com
-	TCPKeepAlive yes
-	identitiesonly yes
-	identityFile ~/.ssh/id_rsa
-
-Host gitlab_alfree_bf
-    # gitlab / メインアカウント
-	User git
-	HostName git.javis.vn
 	TCPKeepAlive yes
 	identitiesonly yes
 	identityFile ~/.ssh/id_rsa
@@ -42,9 +17,7 @@ Host gx-stg
 	HostName 13.231.219.30
 	identityFile ~/.ssh/keypair-GAsite-GX.pem
 
-
 Host gx-prod
 	User ec2-user
 	HostName 3.112.207.194
 	identityFile ~/.ssh/keypair_GXproduction.pem
-
