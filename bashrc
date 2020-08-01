@@ -121,6 +121,8 @@ fi
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 
+export PATH="$HOME/go/1.14.4/bin:$PATH"
+
 alias E='emacsclient -c'
 alias start-emacs='emacs --daemon'
 alias kill-emacs="emacsclient -e '(kill-emacs)'"
