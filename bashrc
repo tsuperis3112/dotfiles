@@ -120,11 +120,11 @@ fi
 
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-
 if [ -n "$GOPATH" ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
-alias E='emacsclient -c'
+alias e='emacsclient -n -c '
+alias t='emacsclient -nw -c '
 alias start-emacs='emacs --daemon'
 alias kill-emacs="emacsclient -e '(kill-emacs)'"
