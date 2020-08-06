@@ -126,5 +126,5 @@ fi
 
 alias e='emacsclient -n -c '
 alias t='emacsclient -nw -c '
-alias start-emacs='emacs --daemon'
-alias kill-emacs="emacsclient -e '(kill-emacs)'"
+alias estart='emacs --daemon'
+alias ekill="emacsclient -e '(kill-emacs)'"
