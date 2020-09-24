@@ -124,6 +124,10 @@ if [ -n "$GOPATH" ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
+if [ -d "$HOME/flutter/bin" ]; then
+  export PATH="$PATH:$HOME/flutter/bin"
+fi
+
 alias e='emacsclient -n -c '
 alias t='emacsclient -nw -c '
 alias estart='emacs --daemon'
