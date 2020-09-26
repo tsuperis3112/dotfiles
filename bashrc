@@ -118,16 +118,20 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# anyenv paths
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 if [ -n "$GOPATH" ]; then
-  export PATH="$GOPATH/bin:$PATH"
+  export PATH="$PATH:$GOPATH/bin"
 fi
 
-if [ -d "$HOME/flutter/bin" ]; then
-  export PATH="$PATH:$HOME/flutter/bin"
+# flutter paths
+FLUTTER=$HOME/.flutter/bin
+if [ -d "$FLUTTER" ]; then
+  export PATH="$PATH:$FLUTTER"
 fi
 
+# emacs
 alias e='emacsclient -n -c '
 alias t='emacsclient -nw -c '
 alias estart='emacs --daemon'
