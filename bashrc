@@ -56,8 +56,6 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-source ~/.git-prompt.sh
-
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[0;36m\]$(__git_ps1)\[\033[00m\]\$ '
 else
@@ -117,6 +115,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+source ~/.git-prompt.sh
+source ~/.git-completion.bash
 
 # anyenv paths
 export PATH="$HOME/.anyenv/bin:$PATH"
