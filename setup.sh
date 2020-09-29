@@ -3,6 +3,10 @@
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 eflg=0
 
+if type "git" > /dev/null 2>&1; then
+  git submodule update --init --recursive
+fi
+
 for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
   if [ $file = "ssh" ]; then
 		file="${file}/config"
@@ -19,6 +23,6 @@ for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
 	fi
 done
 
-. ~/.bashrc
+. $HOME/.bashrc
 
 exit $eflg

@@ -57,16 +57,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    ps1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[0;36m\]$(__git_ps1)\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[0;36m\]$(__git_ps1)\[\033[00m\]\$ '
 else
-    ps1='${debian_chroot:+($debian_chroot)}\u:\w$(__git_ps1)\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u:\w$(__git_ps1)\$ '
 fi
 unset color_prompt force_color_prompt
 
-# if this is an xterm set the title to user@host:dir
-case "$term" in
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
 xterm*|rxvt*)
-    ps1="\[\e]0;${debian_chroot:+($debian_chroot)}\u: \w\a\]$ps1"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u: \w\a\]$PS1"
     ;;
 *)
     ;;
@@ -84,22 +84,22 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# colored gcc warnings and errors
-#export gcc_colors='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alf'
-alias la='ls -a'
-alias l='ls -cf'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
-# add an "alert" alias for long running commands.  use like so:
+# Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# alias definitions.
-# you may want to put all your additions into a separate file like
+# Alias definitions.
+# You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
-# see /usr/share/doc/bash-doc/examples in the bash-doc package.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -120,12 +120,19 @@ source ~/.git-prompt.sh
 source ~/.git-completion.bash
 source ~/.docker-compose-completion.bash
 
-
-export path="$home/.anyenv/bin:$path"
+# anyenv paths
+export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-if [ -n "$gopath" ]; then
-  export path="$gopath/bin:$path"
+if [ -n "$GOPATH" ]; then
+  export PATH="$GOPATH/bin:$PATH"
 fi
+
+# flutter paths
+FLUTTER=$HOME/.flutter/bin
+if [ -d "$FLUTTER" ]; then
+  export PATH="$PATH:$FLUTTER"
+fi
+
 
 alias e='emacsclient -n -c '
 alias t='emacsclient -nw -c '
