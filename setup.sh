@@ -19,4 +19,6 @@ for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
 	fi
 done
 
+. ~/.bashrc
+
 exit $eflg

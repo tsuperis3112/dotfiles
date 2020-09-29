@@ -14,10 +14,23 @@ Host gitlab
 
 Host gx-stg
 	User ec2-user
-	HostName 13.231.219.30
+	#HostName 13.114.103.108
+  HostName 13.231.188.137
 	identityFile ~/.ssh/keypair-GAsite-GX.pem
 
 Host gx-prod
 	User ec2-user
 	HostName 3.112.207.194
 	identityFile ~/.ssh/keypair_GXproduction.pem
+
+host ora-stg
+  # password gres2oracle
+  User opc
+  HostName 158.101.159.104
+  identityFile ~/.ssh/oci_stage
+
+host ora-prod  
+  # password gres2oracle
+  User opc
+  HostName 168.138.211.94
+  identityFile ~/.ssh/oci_product
