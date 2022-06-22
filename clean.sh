@@ -1,16 +1,12 @@
 #!/bin/sh
 
-SCRIPT_DIR=$(cd $(dirname $0); pwd)
+TARGET_DIR=$(cd $(dirname $0); pwd)/files
 
-for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
-  if [ $file = "ssh" ]; then
-		file="${file}/config"
-	fi
-
-	src_path=$SCRIPT_DIR/$file
+for file in `\ls $TARGET_DIR | grep -vE '(setup|clean)\.sh$'`; do
+	src_path=$TARGET_DIR/$file
 	dst_path=$HOME/.$file
 
 	if [ -L "$dst_path" ]; then
-    rm $dst_path
+		rm $dst_path
 	fi
 done
