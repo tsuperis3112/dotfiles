@@ -116,25 +116,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source ~/.git-prompt.sh
-source ~/.git-completion.bash
-source ~/.docker-compose-completion.bash
+source $HOME/.git-prompt.sh
+source $HOME/.git-completion.bash
+source $HOME/.docker-compose-completion.bash
 
-# anyenv paths
-export PATH="$HOME/.anyenv/bin:$PATH"
-eval "$(anyenv init -)"
-if [ -n "$GOPATH" ]; then
-  export PATH="$GOPATH/bin:$PATH"
-fi
-
-# flutter paths
-FLUTTER=$HOME/.flutter/bin
-if [ -d "$FLUTTER" ]; then
-  export PATH="$PATH:$FLUTTER"
-fi
-
-
-alias e='emacsclient -n -c '
-alias t='emacsclient -nw -c '
-alias estart='emacs --daemon'
-alias ekill="emacsclient -e '(kill-emacs)'"
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWSTASHSTATE=true
+GIT_PS1_SHOWUPSTREAM=auto

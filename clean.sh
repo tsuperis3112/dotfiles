@@ -1,7 +1,6 @@
 #!/bin/sh
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
-eflg=0
 
 for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
   if [ $file = "ssh" ]; then
@@ -15,5 +14,3 @@ for file in `\ls $SCRIPT_DIR | grep -vE '(setup|clean)\.sh$'`; do
     rm $dst_path
 	fi
 done
-
-exit $eflg
