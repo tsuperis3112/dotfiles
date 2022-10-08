@@ -116,6 +116,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# --------------------------------------------------
+# Git Prompt設定
+# --------------------------------------------------
+
 source $HOME/.git-prompt.sh
 source $HOME/.git-completion.bash
 source $HOME/.docker-compose-completion.bash
@@ -124,3 +128,22 @@ GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
 GIT_PS1_SHOWSTASHSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
+
+# --------------------------------------------------
+# anyenv設定
+# --------------------------------------------------
+
+if type anyenv >/dev/null 2>&1; then
+  export PATH="$HOME/.anyenv/bin:$PATH"
+  eval "$(anyenv init -)"
+fi
+
+# --------------------------------------------------
+# 環境固有設定
+# --------------------------------------------------
+
+for f in `\find "$HOME/.bash_local/" -type f -name \*.sh -or -name \*.bash`; do
+  if [ -f $f ]; then
+      . $f
+  fi
+done

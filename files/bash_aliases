@@ -1,8 +1,26 @@
-# EMACS
+function python {
+  # 最適なPythonプログラム選択
+  if type -P ipython >/dev/null 2>&1; then
+    command ipython "$@"
+  elif ! type -P python >/dev/null 2>&1 && type -P python3 >/dev/null 2>&1; then
+    command python3 "$@"
+  else
+    command python "$@"
+  fi
+}
+
+# MIT-Schemeのrlwrap対応
+if type -P scheme >/dev/null 2>&1; then
+  if type -P rlwrap >/dev/null 2>&1; then
+    alias scheme='rlwrap -r -c -f "$HOME/.scheme_completion.txt" scheme'
+  else
+    warn "you should install rlwrap."
+  fi
+fi
+
+# Emacs
 alias e='emacsclient -n -c '
 alias t='emacsclient -nw -c '
 alias estart='emacs --daemon'
 alias ekill="emacsclient -e '(kill-emacs)'"
 
-# mit-scheme
-alias scheme='rlwrap -r -c -f "$HOME/.scheme_completion.txt" scheme'

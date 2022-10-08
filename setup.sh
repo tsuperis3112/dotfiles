@@ -1,26 +1,84 @@
-#!/bin/sh
+#!/bin/bash
 
-TARGET_DIR=$(cd $(dirname $0); pwd)/files
-eflg=0
+cd $(dirname $0)
 
-if type "git" > /dev/null 2>&1; then
-  git submodule init
-  git submodule update --recursive --recommend-shallow --depth 1 
-fi
+readonly ROOT_DIR=$(pwd)
+readonly DOTFILES_DIR=$ROOT_DIR/files
+readonly UTILITY_DIR=$ROOT_DIR/utils
+readonly LOCAL_SCRIPT_DIR=$DOTFILES_DIR/bash_local
+readonly BACKUP_DIR=$ROOT_DIR/backups
 
-for file in `\ls $TARGET_DIR`; do
-	src_path=$TARGET_DIR/$file
-	dst_path=$HOME/.$file
+source $ROOT_DIR/utils/io.sh
+source $ROOT_DIR/utils/cmd.sh
 
-	if [ ! -e "$dst_path" ]; then
-    echo "$src_path ===> $dst_path"
-		ln -s $src_path $dst_path
-	elif [ ! -L "$dst_path" ] || [ "$src_path" != `\readlink $dst_path` ]; then
-		echo "Error: $dst_path is already exist" >&2
-		eflg=1
-	fi
+# --------------------------------------------------
+# Main
+# --------------------------------------------------
+
+# initialize submodules
+git submodule init
+git submodule update --recursive --recommend-shallow --depth 1 
+
+mkdir -p $BACKUP_DIR
+
+# create symbolic links
+function add_link() {
+    echo "$1 ===> $2"
+    ln -s "$1" "$2"
+}
+
+for f in `\ls $DOTFILES_DIR`; do
+    src_path=$DOTFILES_DIR/$f
+    dst_path=$HOME/.$f
+
+    if [ ! -e "$dst_path" ]; then
+        add_link "$src_path" "$dst_path"
+    elif [ ! -L "$dst_path" ]; then
+        warn -n "$dst_path is already exist. Do you want to override? [yN] "
+        read OVERRIDE
+
+        case $OVERRIDE in
+            "" | [yY]* )
+                mv "$dst_path" "$BACKUP_DIR/$f"
+                add_link $src_path $dst_path
+                ;;
+            *)
+                echo "cancel copy $src_path"
+                ;;
+        esac
+    elif [ "$src_path" != "`\readlink $dst_path`" ]; then
+        warn -n "$dst_path is already exist."
+    fi
 done
 
-. $HOME/.bashrc
+# --------------------------------------------------
+# Import Utility
+# --------------------------------------------------
 
-exit $eflg
+readonly local UTILITY_SCRIPT="$LOCAL_SCRIPT_DIR/.utils.sh"
+
+echo "#!$(which bash)" > $UTILITY_SCRIPT
+for util_file in `\find "$UTILITY_DIR/" -type f -name \*.sh -or -name \*.bash`; do
+    echo "source $util_file" >> $UTILITY_SCRIPT
+done
+
+# --------------------------------------------------
+# Apply Config
+# --------------------------------------------------
+
+eval "$(cat $HOME/.bashrc | tail -n +10)"
+
+
+# --------------------------------------------------
+# Install Thirdparty
+# --------------------------------------------------
+
+# anyenv
+if check-command anyenv; then
+    readonly ANYENV_PLUGIN_DIR=$(anyenv root)/plugins
+    mkdir -p $ANYENV_PLUGIN_DIR
+
+    if ! [ -d $ANYENV_PLUGIN_DIR/anyenv-update ]; then
+        git clone https://github.com/znz/anyenv-update.git ${ANYENV_PLUGIN_DIR}/anyenv-update
+    fi
+fi

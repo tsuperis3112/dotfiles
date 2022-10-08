@@ -1,5 +1,3 @@
-id_rsa
-id_rsa.pub
-*.pem
-known_hosts
-gitconfig
+backups/*
+files/bash_local/*
+!files/bash_local/.gitkeep
