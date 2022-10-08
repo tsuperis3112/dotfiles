@@ -1,8 +1,10 @@
+source $HOME/.bash_local/.utils.sh
+
+# 最適なPythonプログラム選択
 function python {
-  # 最適なPythonプログラム選択
-  if type -P ipython >/dev/null 2>&1; then
+  if check-command ipython; then
     command ipython "$@"
-  elif ! type -P python >/dev/null 2>&1 && type -P python3 >/dev/null 2>&1; then
+  elif ! check-command python && check-command python3; then
     command python3 "$@"
   else
     command python "$@"
@@ -10,8 +12,8 @@ function python {
 }
 
 # MIT-Schemeのrlwrap対応
-if type -P scheme >/dev/null 2>&1; then
-  if type -P rlwrap >/dev/null 2>&1; then
+if check-command scheme; then
+  if check-command rlwrap; then
     alias scheme='rlwrap -r -c -f "$HOME/.scheme_completion.txt" scheme'
   else
     warn "you should install rlwrap."
