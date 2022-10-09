@@ -8,6 +8,16 @@ case $- in
       *) return;;
 esac
 
+# --------------------------------------------------
+# 環境固有設定
+# --------------------------------------------------
+
+for f in `\find "$HOME/.bash_myscript/" -type f -name \*.sh -or -name \*.bash`; do
+  if [ -f $f ]; then
+      . $f
+  fi
+done
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -138,12 +148,3 @@ if type anyenv >/dev/null 2>&1; then
   eval "$(anyenv init -)"
 fi
 
-# --------------------------------------------------
-# 環境固有設定
-# --------------------------------------------------
-
-for f in `\find "$HOME/.bash_local/" -type f -name \*.sh -or -name \*.bash`; do
-  if [ -f $f ]; then
-      . $f
-  fi
-done

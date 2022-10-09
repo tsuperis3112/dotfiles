@@ -1,9 +1,5 @@
 #!/bin/sh
 
-function clearline {
-    echo -e "\033[2K\033[G"
-}
-
 function warn {
     echo -n -e "\e[33;1mWARNING: \e[0;33m" 1>&2
     echo "$@" 1>&2

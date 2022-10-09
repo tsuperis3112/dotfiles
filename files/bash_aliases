@@ -1,4 +1,4 @@
-source $HOME/.bash_local/.utils.sh
+source $HOME/.bash_myscript/.utils.sh
 
 # 最適なPythonプログラム選択
 function python {
