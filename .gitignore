@@ -1,0 +1,4 @@
+.skip_cache
+backups/*
+files/bash_myscript/*
+!files/bash_myscript/.gitkeep

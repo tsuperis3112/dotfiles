@@ -1,0 +1,28 @@
+source $HOME/.bash_myscript/.utils.sh
+
+# 最適なPythonプログラム選択
+function python {
+  if check-command ipython; then
+    command ipython "$@"
+  elif ! check-command python && check-command python3; then
+    command python3 "$@"
+  else
+    command python "$@"
+  fi
+}
+
+# MIT-Schemeのrlwrap対応
+if check-command scheme; then
+  if check-command rlwrap; then
+    alias scheme='rlwrap -r -c -f "$HOME/.scheme_completion.txt" scheme'
+  else
+    warn "you should install rlwrap."
+  fi
+fi
+
+# Emacs
+alias e='emacsclient -n -c '
+alias t='emacsclient -nw -c '
+alias estart='emacs --daemon'
+alias ekill="emacsclient -e '(kill-emacs)'"
+

@@ -1,0 +1,6 @@
+[submodule "files/anyenv"]
+	path = files/anyenv
+	url = https://github.com/anyenv/anyenv
+[submodule "files/emacs.d"]
+	path = files/emacs.d
+	url = https://github.com/tsuperis/.emacs.d
