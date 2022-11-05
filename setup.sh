@@ -43,7 +43,16 @@ function add_link() {
 for f in `\ls $DOTFILES_DIR`; do
     src_path=$DOTFILES_DIR/$f
     dst_path=$HOME/.$f
-    cacheline="$src_path $(date -r "$src_path" +%Y%m%d%H%M%S)"
+
+    if [ -f "$src_path" ]; then
+        hashkey=$(date -r "$src_path" +%Y%m%d%H%M%S)
+    else
+        hashkey=$(git submodule foreach -q "[ \`basename \$name\` = \"$f\" ] && (echo \`git rev-parse HEAD\`) || true")
+        if [ -z "$hashkey" ]; then
+            hashkey=$(find "$src_path" -type f | sort | tr '\n' '\0' | xargs -0 sha1sum | sha1sum | head -c 40)
+        fi
+    fi
+    cacheline="${src_path}:${hash_key}"
 
     if [ ! -e "$dst_path" ]; then
         add_link "$src_path" "$dst_path"
