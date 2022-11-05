@@ -143,8 +143,13 @@ GIT_PS1_SHOWUPSTREAM=auto
 # anyenv設定
 # --------------------------------------------------
 
-if type anyenv >/dev/null 2>&1; then
+if [ -d "$HOME/.anyenv/bin" ]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init -)"
 fi
 
+# --------------------------------------------------
+# poetry設定
+# --------------------------------------------------
+
+export POETRY_VIRTUALENVS_IN_PROJECT=true
