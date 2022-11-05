@@ -12,6 +12,8 @@ esac
 # 環境固有設定
 # --------------------------------------------------
 
+export PATH="~/.bin:$PATH"
+
 for f in `\find "$HOME/.bash_myscript/" -type f -name \*.sh -or -name \*.bash`; do
   if [ -f $f ]; then
       . $f
@@ -143,8 +145,8 @@ GIT_PS1_SHOWUPSTREAM=auto
 # anyenv設定
 # --------------------------------------------------
 
+export PATH="$HOME/.anyenv/bin:$PATH"
 if type anyenv >/dev/null 2>&1; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init -)"
 fi
 

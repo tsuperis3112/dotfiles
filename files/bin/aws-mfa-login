@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+# 引数解析
+PROFILE="default"
+while (( $# > 0 )); do
+    case $1 in
+        --profile)
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "'profile' requires an argument." 1>&2
+                exit 1
+            else
+                PROFILE="$2"
+                shift
+            fi
+        ;;
+        *)
+            ARGS=("${ARGS[@]}" "$1")
+        ;;
+    esac
+    shift
+done
+
+if [ ${#ARGS[@]} -eq 0 ] || [[ ${ARGS[0]} =~ [^0-9] ]]; then
+    echo 'token number is required'
+    exit 1
+fi
+TOKEN=${ARGS[0]}
+
+AWS="aws --profile $PROFILE"
+
+# MFAクレデンシャル情報取得
+USER_ID=`$AWS sts get-caller-identity | jq -r '.UserId'`
+SERIAL_NUMBER=`$AWS iam list-virtual-mfa-devices | jq -r ".VirtualMFADevices[] | select(.User.UserId == \"$USER_ID\") | .SerialNumber"`
+SESSION_JSON=`$AWS sts get-session-token --serial-number $SERIAL_NUMBER --token-code $TOKEN --output json`
+
+# jqで必要な項目を変数にセットする
+MFA_ACCESS_KEY=$(echo $SESSION_JSON | jq -r '.Credentials.AccessKeyId')
+MFA_SECRET_ACCESS_KEY=$(echo $SESSION_JSON | jq -r '.Credentials.SecretAccessKey')
+MFA_SESSION_TOKEN=$(echo $SESSION_JSON | jq -r '.Credentials.SessionToken')
+MFA_EXPIRATION=$(echo $SESSION_JSON | jq -r '.Credentials.Expiration')
+
+# MFA用クレデンシャルをセットするプロファイル名
+MFA_PROFILE=${PROFILE}-mfa
+
+# MFA用プロファイルにクレデンシャルをセット
+AWS="aws --profile ${MFA_PROFILE}"
+$AWS configure set aws_access_key_id $MFA_ACCESS_KEY
+$AWS configure set aws_secret_access_key $MFA_SECRET_ACCESS_KEY
+$AWS configure set aws_session_token $MFA_SESSION_TOKEN
+
+echo "New credentials have been set successfully. (profile: $MFA_PROFILE, expiration: $MFA_EXPIRATION)"

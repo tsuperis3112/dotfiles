@@ -31,12 +31,18 @@ mkdir -p "$BACKUP_DIR"
 function add_link() {
     echo "$1 ===> $2"
     ln -s "$1" "$2"
+    if [ `basename $1` = bashrc ]; then
+        source $2
+    fi
 }
+
+# --------------------------------------------------
+# Dotfiles
+# --------------------------------------------------
 
 for f in `\ls $DOTFILES_DIR`; do
     src_path=$DOTFILES_DIR/$f
     dst_path=$HOME/.$f
-    tmp_path=$TMP_DIR/$f
 
     cacheline="$src_path $(date -r "$src_path" +%Y%m%d%H%M%S)"
 
