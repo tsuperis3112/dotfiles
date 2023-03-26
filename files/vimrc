@@ -1,6 +1,7 @@
 " setting
 "文字コードをUFT-8に設定
 set fenc=utf-8
+set autoindent
 " バックアップファイルを作らない
 set nobackup
 " スワップファイルを作らない
@@ -46,8 +47,8 @@ set list listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 set expandtab
 " 行頭以外のTab文字の表示幅（スペースいくつ分）
 set shiftwidth=4
-set tabstop=4
 " 行頭でのTab文字の表示幅
+set tabstop=4
 
 
 " 検索系
