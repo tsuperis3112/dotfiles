@@ -11,6 +11,12 @@ readonly BACKUP_DIR=backups
 readonly CACHEFILE=.skip_cache
 
 # --------------------------------------------------
+# Install submodules
+# --------------------------------------------------
+
+git submodule update --init --recursive
+
+# --------------------------------------------------
 # Import Utility
 # --------------------------------------------------
 
@@ -98,7 +104,7 @@ for item in `\ls $DOTFILES_DIR`; do
             read OVERRIDE
             case $OVERRIDE in
                 [yY]* )
-                    mv "$dst_path" "$BACKUP_DIR/$item"
+                    mv "$abs_dst_path" "$BACKUP_DIR/$item"
                     add_link $abs_src_path $abs_dst_path
                     ;;
                 * )
@@ -126,7 +132,7 @@ source "$HOME/.bashrc"
 
 echo "run post-scripts"
 
-for file in ./hooks/pre-*.sh; do
+for file in ./hooks/post-*.sh; do
     once_exec "$file"
 done
 
