@@ -142,6 +142,20 @@ GIT_PS1_SHOWSTASHSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
 
 # --------------------------------------------------
+# tmux
+# --------------------------------------------------
+
+#if hash tmux >/dev/null 2>&1 && [[ -z "$TMUX" ]]; then
+#    ID="$( tmux ls | grep -vm1 attached | cut -d: -f1 )"
+#    if [[ -z "$ID" ]] ;then
+#        tmux new-session
+#    else
+#        tmux attach-session -t "$ID"
+#    fi
+#    exit
+#fi
+
+# --------------------------------------------------
 # anyenv設定
 # --------------------------------------------------
 
@@ -164,3 +178,9 @@ if [ -f "$HOME/.cargo/env" ]; then
     . "$HOME/.cargo/env"
 fi
 
+# --------------------------------------------------
+# alias
+# --------------------------------------------------
+alias ..='cd ..'
+
+source <(kubectl completion bash)
