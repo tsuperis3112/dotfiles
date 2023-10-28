@@ -1,6 +1,9 @@
-[submodule "files/emacs.d"]
-	path = files/emacs.d
+[submodule "homefiles/emacs.d"]
+	path = homefiles/emacs.d
 	url = https://github.com/tsuperis/.emacs.d
-[submodule "files/asdf"]
-	path = files/asdf
+[submodule "homefiles/asdf"]
+	path = homefiles/asdf
 	url = https://github.com/asdf-vm/asdf.git
+[submodule "homefiles/oh-my-zsh"]
+	path = homefiles/oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git

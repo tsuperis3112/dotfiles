@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cd $(dirname $0)
-readonly ROOT_DIR=$(pwd)
+cd "$(dirname $0)"
+readonly ROOT_DIR="$(pwd)"
 
-readonly DOTFILES_DIR=files
+readonly DOTFILES_DIR=homefiles
 readonly UTILITY_DIR=utils
 readonly LOCAL_SCRIPT_DIR=$DOTFILES_DIR/bash_myscript
 readonly BACKUP_DIR=backups
@@ -20,10 +20,10 @@ git submodule update --init --recursive
 # Import Utility
 # --------------------------------------------------
 
-readonly local UTILITY_SCRIPT="$LOCAL_SCRIPT_DIR/.utils.sh"
-rm -f $UTILITY_SCRIPT
+readonly local UTILITY_SCRIPT=$LOCAL_SCRIPT_DIR/.utils.sh
+rm -f "$UTILITY_SCRIPT"
 
-for util_file in `\find "$UTILITY_DIR/" -type f -name \*.sh -or -name \*.bash`; do
+for util_file in $(find "$UTILITY_DIR/" -type f -name \*.sh); do
     source "$util_file"
     echo "source ${ROOT_DIR}/${util_file}" >> "$UTILITY_SCRIPT"
 done
@@ -45,7 +45,7 @@ function once_exec() {
     if ! has_line "$hashkey"; then
         echo "$1"
         bash "$1"
-        echo ${hashkey} >> "$CACHEFILE"
+        echo "${hashkey}" >> "$CACHEFILE"
     fi
 }
 
@@ -57,7 +57,7 @@ function export_hashkey() {
     else
         local hashkey=$(git submodule foreach -q "[ \$name = \"$rel_path\" ] && (echo \`git rev-parse HEAD\`) || true")
         if [ -z "$hashkey" ]; then
-            local hashkey=$(cd $rel_path; git log -n 1 --pretty=format:%H)
+            local hashkey=$(cd "$rel_path"; git log -n 1 --pretty=format:%H)
         fi
     fi
 
@@ -77,7 +77,9 @@ function add_link() {
 echo "run pre-scripts"
 
 for file in ./hooks/pre-*.sh; do
-    once_exec "$file"
+    if [ -f "$file" ]; then
+        once_exec "$file"
+    fi
 done
 
 # --------------------------------------------------
@@ -86,7 +88,7 @@ done
 
 echo "setup dotfiles"
 
-for item in `\ls $DOTFILES_DIR`; do
+for item in $(ls $DOTFILES_DIR); do
     rel_src_path=$DOTFILES_DIR/$item
     abs_src_path=$ROOT_DIR/$rel_src_path
     abs_dst_path=$HOME/.$item
@@ -109,7 +111,7 @@ for item in `\ls $DOTFILES_DIR`; do
                     ;;
                 * )
                     warn "\tcancel copy $abs_src_path"
-                    echo $hashkey >> $CACHEFILE
+                    echo "$hashkey" >> "$CACHEFILE"
                     ;;
             esac
         else
@@ -133,6 +135,8 @@ source "$HOME/.bashrc"
 echo "run post-scripts"
 
 for file in ./hooks/post-*.sh; do
-    once_exec "$file"
+    if [ -f "$file" ]; then
+        once_exec "$file"
+    fi
 done
 

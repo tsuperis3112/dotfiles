@@ -9,16 +9,18 @@ case $- in
 esac
 
 # --------------------------------------------------
-# 環境固有設定
+# Paths
 # --------------------------------------------------
 
 export PATH="~/.bin:$PATH"
 
-for f in `\find "$HOME/.bash_myscript/" -type f -name \*.sh -or -name \*.bash`; do
+for f in $(find "$HOME/.bash_myscript/" -type f -name \*.sh -or -name \*.bash); do
   if [ -f $f ]; then
       . $f
   fi
 done
+
+check-command zsh && exec zsh
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -40,7 +42,9 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+if check-command lesspipe; then
+    eval "$(SHELL=/bin/sh lesspipe)"
+fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -87,7 +91,7 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
+    alias ls='ls -F --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
@@ -100,9 +104,9 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -lh'
 alias la='ls -A'
-alias l='ls -CF'
+alias lla='ls -Alh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -129,56 +133,23 @@ if ! shopt -oq posix; then
 fi
 
 # --------------------------------------------------
-# Git Prompt設定
+# 補完
 # --------------------------------------------------
 
-source $HOME/.git-prompt.sh
-source $HOME/.git-completion.bash
-source $HOME/.docker-compose-completion.bash
+for f in $(ls "$HOME/.bash_completion.d/"); do
+  if [ -f $f ]; then
+      . $f
+  fi
+done
+
+[ -d "$HOME/.asdf" ] && . "$HOME/.asdf/completions/asdf.bash"
+check-command kubectl && source <(kubectl completion bash)
+
+# --------------------------------------------------
+# Git Prompt
+# --------------------------------------------------
 
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
 GIT_PS1_SHOWSTASHSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
-
-# --------------------------------------------------
-# tmux
-# --------------------------------------------------
-
-#if hash tmux >/dev/null 2>&1 && [[ -z "$TMUX" ]]; then
-#    ID="$( tmux ls | grep -vm1 attached | cut -d: -f1 )"
-#    if [[ -z "$ID" ]] ;then
-#        tmux new-session
-#    else
-#        tmux attach-session -t "$ID"
-#    fi
-#    exit
-#fi
-
-# --------------------------------------------------
-# asdf設定
-# --------------------------------------------------
-
-if [ -d "$HOME/.asdf" ]; then
-    . "$HOME/.asdf/asdf.sh"
-    . "$HOME/.asdf/completions/asdf.bash"
-fi
-
-# --------------------------------------------------
-# poetry設定
-# --------------------------------------------------
-
-export POETRY_VIRTUALENVS_IN_PROJECT=true
-
-# --------------------------------------------------
-# Rust
-# --------------------------------------------------
-
-if [ -f "$HOME/.cargo/env" ]; then
-    . "$HOME/.cargo/env"
-fi
-
-# --------------------------------------------------
-# alias
-# --------------------------------------------------
-alias ..='cd ..'
