@@ -7,8 +7,6 @@ readonly BACKUP_DIR=backups
 
 readonly SKIP_CACHE=.skip_cache
 
-source utils/io.sh
-
 for file in $(ls "$TARGET_DIR"); do
     src_path=$TARGET_DIR/$file
     backup_path=$BACKUP_DIR/$file
@@ -29,7 +27,7 @@ for file in $(ls "$TARGET_DIR"); do
 
             case $OVERRIDE in
                 [yY])
-                    warn "override $dst_path"
+                    echo "override $dst_path"
                     mv "$backup_path" "$dst_path"
                     ;;
             esac

@@ -1,6 +1,6 @@
 # MIT-Schemeのrlwrap対応
-if check-command scheme; then
-  if check-command rlwrap; then
+if type scheme >/dev/null 2>&1; then
+  if type rlwrap >/dev/null 2>&1; then
     alias scheme='rlwrap -r -c -f "$HOME/.scheme_completion.txt" scheme'
   else
     warn "you should install rlwrap."

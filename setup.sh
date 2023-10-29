@@ -5,7 +5,6 @@ readonly ROOT_DIR="$(pwd)"
 
 readonly DOTFILES_DIR=homefiles
 readonly UTILITY_DIR=utils
-readonly LOCAL_SCRIPT_DIR=$DOTFILES_DIR/bash_myscript
 readonly BACKUP_DIR=backups
 
 readonly CACHEFILE=.skip_cache
@@ -15,18 +14,6 @@ readonly CACHEFILE=.skip_cache
 # --------------------------------------------------
 
 git submodule update --init --recursive
-
-# --------------------------------------------------
-# Import Utility
-# --------------------------------------------------
-
-readonly local UTILITY_SCRIPT=$LOCAL_SCRIPT_DIR/.utils.sh
-rm -f "$UTILITY_SCRIPT"
-
-for util_file in $(find "$UTILITY_DIR/" -type f -name \*.sh); do
-    source "$util_file"
-    echo "source ${ROOT_DIR}/${util_file}" >> "$UTILITY_SCRIPT"
-done
 
 # --------------------------------------------------
 # Functions
@@ -110,7 +97,7 @@ for item in $(ls $DOTFILES_DIR); do
                     add_link $abs_src_path $abs_dst_path
                     ;;
                 * )
-                    warn "\tcancel copy $abs_src_path"
+                    echo "\tcancel copy $abs_src_path"
                     echo "$hashkey" >> "$CACHEFILE"
                     ;;
             esac
@@ -118,7 +105,7 @@ for item in $(ls $DOTFILES_DIR); do
             echo -e "\tSKIP: $abs_src_path"
         fi
     elif [ "$abs_src_path" != "`\readlink $abs_dst_path`" ]; then
-        warn -n "\t$abs_dst_path is already exist."
+        echo -n "\t$abs_dst_path is already exist."
     fi
 done
 

@@ -4,23 +4,17 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
+    *i*) type zsh >/dev/null 2>&1 && exec zsh;;
       *) return;;
 esac
 
-# --------------------------------------------------
-# Paths
-# --------------------------------------------------
-
 export PATH="~/.bin:$PATH"
 
-for f in $(find "$HOME/.bash_myscript/" -type f -name \*.sh -or -name \*.bash); do
+for f in $(find "$HOME/.shell.d/" -type f -name \*.sh -or -name \*.bash); do
   if [ -f $f ]; then
       . $f
   fi
 done
-
-check-command zsh && exec zsh
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -98,6 +92,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
+else
+    alias ls='ls -F'
 fi
 
 # colored GCC warnings and errors
@@ -117,8 +113,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.sh_aliases ]; then
+    . ~/.sh_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -142,7 +138,7 @@ for f in $(ls "$HOME/.bash_completion.d/"); do
   fi
 done
 
-[ -d "$HOME/.asdf" ] && . "$HOME/.asdf/completions/asdf.bash"
+[ -n "${ASDF_DIR}" ] && . "${ASDF_DIR}/completions/asdf.bash"
 check-command kubectl && source <(kubectl completion bash)
 
 # --------------------------------------------------
