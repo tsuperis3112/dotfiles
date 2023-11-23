@@ -9,7 +9,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="half-life"
+#ZSH_THEME="muse"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -71,7 +71,7 @@ ZSH_THEME="half-life"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo zsh-autosuggestions zsh-syntax-highlighting git asdf docker kubectl aws zsh-interactive-cd)
+plugins=(sudo zsh-autosuggestions zsh-syntax-highlighting git git-prompt asdf docker kubectl aws zsh-interactive-cd minikube)
 
 case ${OSTYPE} in
 darwin*)
@@ -111,6 +111,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+#PROMPT='$(git_prompt_short_sha)'
+#RPROMPT='[%*]'
+
 # Ctrl+u
 bindkey \^U backward-kill-line
 
@@ -123,3 +126,65 @@ for f in $(find "$HOME/.shell.d/" -type f -name \*.sh -or -name \*.zsh); do
       . $f
   fi
 done
+
+# af-magic.zsh-theme
+#
+# Author: Andy Fleming
+# URL: http://andyfleming.com/
+
+prompt_color="%F{250}"
+curdir_color="%F{034}"
+secondary_color="%F{240}"
+
+# dashed separator size
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+function show_statusline {
+  local code="%(?.%F{green}.%F{red}%B)$?%b"
+  local hhmmss="$(date +"%H:%M:%S")"
+  local pyenv_dir="${VIRTUAL_ENV:-$CONDA_DEFAULT_ENV}"
+  local pyenv="${python_env_dir##*/}"
+
+  local elements=("$code" "$hhmmss")
+  if [[ -n "$pyenv" ]]; then
+      elements+=("venv:$pyenv")
+  fi
+
+  for i in {1..$#elements}; do
+      elements[$i]="${secondary_color}[${elements[$i]}${secondary_color}]"
+  done
+
+  local info="${(j:-:)elements}"
+  local info_length=$(echo $info | sed -E 's/%([bfB]|F\{[^\}]+?\}|\([^\)]+?\))//g' | wc -c)
+  local rmargin=$(( COLUMNS - info_length ))
+
+  echo "${info}${(l.rmargin..-.)}%f"
+}
+
+# primary prompt: dashed separator, directory and vcs info
+PROMPT="\$(show_statusline)
+${curdir_color}%B%~%f%b \$(git_super_status)${prompt_color}%(!.#.$) %f"
+PROMPT2="${prompt_color}> %f"
+
+RPROMPT="${secondary_color}%B%n@%m%b%f"
+
+# git settings
+#ZSH_THEME_GIT_PROMPT_PREFIX=" ${FG[075]}(${FG[078]}"
+#ZSH_THEME_GIT_PROMPT_CLEAN=""
+#ZSH_THEME_GIT_PROMPT_DIRTY="${FG[214]}*%{$reset_color%}"
+#ZSH_THEME_GIT_PROMPT_SUFFIX="${FG[075]})%{$reset_color%}"
+
+# git prompt
+ZSH_THEME_GIT_PROMPT_PREFIX="%f%b("
+ZSH_THEME_GIT_PROMPT_SUFFIX=")"
+ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+ZSH_THEME_GIT_PROMPT_BRANCH="%B%F{063}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%F{124}!"
+ZSH_THEME_GIT_PROMPT_CHANGED="%F{214}*"
+ZSH_THEME_GIT_PROMPT_DELETED="%F{096}-"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%F{009}?"
+ZSH_THEME_GIT_PROMPT_STAGED="%F{010}+"
+ZSH_THEME_GIT_PROMPT_STASHED="%F{027}.."
+ZSH_THEME_GIT_PROMPT_BEHIND="<"
+ZSH_THEME_GIT_PROMPT_AHEAD=">"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{046}="
