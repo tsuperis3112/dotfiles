@@ -1,4 +1,5 @@
 set fenc=utf-8
+
 set nobackup
 set noswapfile
 set autoread
@@ -6,7 +7,8 @@ set hidden
 set showcmd
 set laststatus=2
 set wildmode=list:longest
-set clipboard=unnamedplus
+set clipboard&
+set clipboard^=unnamedplus
 
 " visual
 set number
@@ -35,6 +37,15 @@ set incsearch
 set wrapscan
 set hlsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
+" shebang
+autocmd BufWritePost * :call AddExecmod()
+function AddExecmod()
+    let line = getline(1)
+    if strpart(line, 0, 2) == "#!"
+        call system("chmod +x ". expand("%"))
+    endif
+endfunction
 
 " dein
 let $CACHE = expand('~/.cache')
