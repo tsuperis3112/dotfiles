@@ -19,7 +19,7 @@ git submodule update --init --recursive
 # Functions
 # --------------------------------------------------
 
-function has_line() {
+function __has_line() {
     if grep -q -s -x "$hashkey" "$CACHEFILE"; then
         return 0
     else
@@ -27,12 +27,24 @@ function has_line() {
     fi
 }
 
-function once_exec() {
+function __exec {
+    if [ -f "$1" ]; then
+      echo "exec: $1"
+      "$1"
+      return 0
+    else
+      return 1
+    fi
+}
+
+function __once_exec {
+    if [ ! -f "$1" ]; then
+        return
+    fi
+
     local hashkey="$(export_hashkey "$1"):script"
-    if ! has_line "$hashkey"; then
-        echo "$1"
-        bash "$1"
-        echo "${hashkey}" >> "$CACHEFILE"
+    if ! __has_line "$hashkey"; then
+        __exec "$1" && echo "${hashkey}" >> "$CACHEFILE"
     fi
 }
 
@@ -63,10 +75,12 @@ function add_link() {
 
 echo "run pre-scripts"
 
-for file in ./hooks/pre-*.sh; do
-    if [ -f "$file" ]; then
-        once_exec "$file"
-    fi
+for file in ./hooks/pre-once-*.sh; do
+    __once_exec "$file"
+done
+
+for file in ./hooks/pre-every-*.sh; do
+    __exec "$file"
 done
 
 # --------------------------------------------------
@@ -87,7 +101,7 @@ for item in $(ls $DOTFILES_DIR); do
     if [ ! -e "$abs_dst_path" ]; then
         add_link "$abs_src_path" "$abs_dst_path"
     elif [ ! -L "$abs_dst_path" ]; then
-        if ! has_line "$hashkey"; then
+        if ! __has_line "$hashkey"; then
             echo -e -n "\t$abs_dst_path is already exist. Do you want to override? [y/N] "
 
             read OVERRIDE
@@ -121,9 +135,11 @@ source "$HOME/.bashrc"
 
 echo "run post-scripts"
 
-for file in ./hooks/post-*.sh; do
-    if [ -f "$file" ]; then
-        once_exec "$file"
-    fi
+for file in ./hooks/post-once-*.sh; do
+    __once_exec "$file"
+done
+
+for file in ./hooks/post-every-*.sh; do
+    __exec "$file"
 done
 
