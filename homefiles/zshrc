@@ -70,17 +70,36 @@ ZSH_THEME="flatblock"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo zsh-autosuggestions zsh-syntax-highlighting git asdf docker kubectl aws zsh-interactive-cd minikube)
+plugins=(
+    aliases
+# utility
+    sudo
+    copypath
+    copybuffer
+    web-search
+    zsh-interactive-cd
+    zsh-navigation-tools
+# utility
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    zsh-completions
+# global tools
+    git
+    asdf
+    docker
+    kubectl
+# for env
+    #aws
+    #gcloud
+    #minikube
+)
 
-case ${OSTYPE} in
-darwin*)
-    plugins=(macos $plugins)
-    ;;
-linux*)
-    ;;
-esac
-
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+plugin_extentions="$HOME/.oh-my-zsh-plugins"
+if [ -f "$plugin_extentions" ]; then
+    source $plugin_extentions
+else
+    echo "if you want to add plugins to your zsh, you can add plugins to $plugin_extentions"
+fi
 
 source $ZSH/oh-my-zsh.sh
 

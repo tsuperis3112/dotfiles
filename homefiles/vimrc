@@ -7,8 +7,7 @@ set hidden
 set showcmd
 set laststatus=2
 set wildmode=list:longest
-set clipboard&
-set clipboard^=unnamedplus
+set clipboard=unnamed
 
 " visual
 set number

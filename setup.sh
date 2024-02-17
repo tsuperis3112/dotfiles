@@ -13,7 +13,7 @@ readonly CACHEFILE=.skip_cache
 # Install submodules
 # --------------------------------------------------
 
-git submodule update --init --recursive
+git submodule update --init --recursive --depth 1
 
 # --------------------------------------------------
 # Functions
