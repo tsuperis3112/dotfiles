@@ -88,18 +88,13 @@ plugins=(
     asdf
     docker
     kubectl
-# for env
-    #aws
-    #gcloud
-    #minikube
 )
 
-plugin_extentions="$HOME/.oh-my-zsh-plugins"
-if [ -f "$plugin_extentions" ]; then
-    source $plugin_extentions
-else
-    echo "if you want to add plugins to your zsh, you can add plugins to $plugin_extentions"
-fi
+for f in $(find "$HOME/.shell.d/" -type f -name \*.sh -or -name \*.zsh); do
+  if [ -f $f ]; then
+      . $f
+  fi
+done
 
 source $ZSH/oh-my-zsh.sh
 
@@ -132,12 +127,12 @@ source $ZSH/oh-my-zsh.sh
 # Ctrl+u
 bindkey \^U backward-kill-line
 
+# load settings
 if [ -f ~/.sh_aliases ]; then
     . ~/.sh_aliases
 fi
 
-for f in $(find "$HOME/.shell.d/" -type f -name \*.sh -or -name \*.zsh); do
-  if [ -f $f ]; then
-      . $f
-  fi
-done
+# direnv
+if which direnv >/dev/null; then
+    eval "$(direnv hook zsh)"
+fi
