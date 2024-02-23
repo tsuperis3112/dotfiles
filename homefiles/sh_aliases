@@ -6,23 +6,3 @@ if type scheme >/dev/null 2>&1; then
     warn "you should install rlwrap."
   fi
 fi
-
-alias ..='cd ../'
-alias ...='cd ../../'
-
-# ls
-alias ls='ls -F --color=auto'
-
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias ll='ls -lh'
-alias la='ls -A'
-alias lla='ls -Alh'
-
-# Emacs
-alias e='emacsclient -n -c '
-alias t='emacsclient -nw -c '
-alias estart='emacs --daemon'
-alias ekill="emacsclient -e '(kill-emacs)'"
-

@@ -12,4 +12,5 @@ $CONF branch.sort -committerdate
 $CONF tag.sort taggerdate
 $CONF diff.algorithm histogram
 $CONF rerere.enabled true
-
+$CONF submodule.recurse true
+$CONF core.editor 'vi -c "set fenc=utf-8"'
