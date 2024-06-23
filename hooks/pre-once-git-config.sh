@@ -14,3 +14,5 @@ $CONF diff.algorithm histogram
 $CONF rerere.enabled true
 $CONF submodule.recurse true
 $CONF core.editor 'vi -c "set fenc=utf-8"'
+
+git pull

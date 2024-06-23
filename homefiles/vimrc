@@ -73,4 +73,3 @@ if dein#check_install()
 endif
 
 colorscheme molokai
-

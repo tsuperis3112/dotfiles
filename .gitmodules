@@ -1,9 +1,21 @@
-[submodule "homefiles/emacs.d"]
-	path = homefiles/emacs.d
-	url = https://github.com/tsuperis/.emacs.d
 [submodule "homefiles/asdf"]
 	path = homefiles/asdf
 	url = https://github.com/asdf-vm/asdf.git
 [submodule "homefiles/oh-my-zsh"]
 	path = homefiles/oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh.git
+[submodule "homefiles/custom-zsh.d/plugins/zsh-syntax-highlighting"]
+	path = homefiles/custom-zsh.d/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "homefiles/custom-zsh.d/plugins/zsh-autosuggestions"]
+	path = homefiles/custom-zsh.d/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "homefiles/custom-zsh.d/plugins/zsh-completions"]
+	path = homefiles/custom-zsh.d/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "homefiles/custom-zsh.d/plugins/task"]
+	path = homefiles/custom-zsh.d/plugins/task
+	url = https://github.com/sawadashota/go-task-completions.git
+[submodule "homefiles/custom-zsh.d/plugins/you-should-use"]
+	path = homefiles/custom-zsh.d/plugins/you-should-use
+	url = https://github.com/MichaelAquilina/zsh-you-should-use.git

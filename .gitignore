@@ -1,6 +1,5 @@
 .skip_cache
 backups/*
 !backups/.gitkeep
-files/bash_myscript/*
-!files/bash_myscript/.gitkeep
-homefiles/shell.d/custom.*sh
+homefiles/custom-zsh.d/override/*
+!homefiles/custom-zsh.d/override/.gitkeep
