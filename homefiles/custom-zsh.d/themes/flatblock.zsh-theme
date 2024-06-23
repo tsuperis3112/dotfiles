@@ -1,9 +1,11 @@
-prompt_color="%F{252}"
+prompt_color="%F{248}"
 curdir_color="%F{034}"
-secondary_color="%F{242}"
+secondary_color="%F{232}"
+
+current_path="%(5~|%-1~/.../%3~|%~)"
 
 PROMPT="\$(__statusline)
-${curdir_color}%B%~%f%b \$(__git_prompt)${prompt_color}%(!.#.$) %f"
+${curdir_color}%B${current_path}%f%b \$(__git_prompt)${prompt_color}%(!.#.$) %f"
 PROMPT2="${prompt_color}> %f"
 
 RPROMPT="${secondary_color}%B%n@%m%b%f"
@@ -70,23 +72,15 @@ function __pyvenv {
 
 # git settings
 function __git_prompt() {
-  if ! __git_prompt_git rev-parse --git-dir &> /dev/null \
+  if ! __git_prompt_git rev-parse --git-dir &>/dev/null \
      || [[ "$(__git_prompt_git config --get oh-my-zsh.hide-info 2>/dev/null)" == 1 ]]; then
     return 0
   fi
 
-  local ref
-  ref=$(__git_prompt_git symbolic-ref --short HEAD 2> /dev/null)
-  if [ -z "$ref" ]; then
-    tag=$(__git_prompt_git describe --tags --exact-match HEAD 2> /dev/null)
-    if [ -n "$tag"]; then
-      ref="tag::$tag"
-    else
-      ref=$(__git_prompt_git rev-parse --short HEAD 2> /dev/null)
-    fi
-  fi
-
-  [ -z "$ref" ] && return 0
+  ref=$(__git_prompt_git symbolic-ref --short HEAD 2>/dev/null) ||
+    ref="tag:$(__git_prompt_git describe --tags --exact-match HEAD 2>/dev/null)" ||
+    ref="ref:$(__git_prompt_git rev-parse --short HEAD 2>/dev/null)" ||
+    return 0
 
   echo "%f%b(%B%F{062}${ref:gs/%/%%}%b%f$(git_prompt_status)%f%b)"
 }
@@ -103,4 +97,3 @@ ZSH_THEME_GIT_PROMPT_AHEAD="%f>"
 ZSH_THEME_GIT_PROMPT_BEHIND="%f<"
 ZSH_THEME_GIT_PROMPT_DIVERGED="%f<>"
 ZSH_THEME_GIT_PROMPT_STASHED="%F{027}.."
-
