@@ -77,7 +77,7 @@ plugins=(
     jump # mark, unmark, marks, jump
     copypath  # ctrl-o
     copyfile
-    copybuffer
+    copybuffer # ctrl-o
     copyfile
     # settings
     you-should-use
@@ -168,3 +168,4 @@ for f in $(ls "$override_path"); do
         . "$f"
     fi
 done
+

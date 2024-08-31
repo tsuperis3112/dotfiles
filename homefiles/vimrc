@@ -73,3 +73,5 @@ if dein#check_install()
 endif
 
 colorscheme molokai
+vnoremap < <gv
+vnoremap > >gv
