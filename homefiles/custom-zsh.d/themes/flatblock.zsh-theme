@@ -1,6 +1,6 @@
 prompt_color="%F{248}"
 curdir_color="%F{034}"
-secondary_color="%F{232}"
+secondary_color="%F{241}"
 
 current_path="%(5~|%-1~/.../%3~|%~)"
 
