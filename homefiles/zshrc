@@ -88,7 +88,6 @@ plugins=(
     zsh-completions
     # common tools
     git
-    asdf
 )
 
 add_plugin() {
@@ -169,3 +168,8 @@ for f in $(ls "$override_path"); do
     fi
 done
 
+if [ -f "${HOME}/.local/bin/mise" ]; then
+    eval "$(${HOME}/.local/bin/mise activate zsh)"
+    eval "$(${HOME}/.local/bin/mise activate --shims)"
+    export MISE_LIBGIT2=false
+fi
