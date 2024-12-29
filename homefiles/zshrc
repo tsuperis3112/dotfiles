@@ -155,7 +155,7 @@ source $ZSH/oh-my-zsh.sh
 bindkey \^U backward-kill-line
 
 # custom shell scripts path
-if [ -f "${HOME}/.bin" ]; then
+if [ -d "${HOME}/.bin" ]; then
     export PATH="${PATH}:${HOME}/.bin"
 fi
 
@@ -172,4 +172,9 @@ if [ -f "${HOME}/.local/bin/mise" ]; then
     eval "$(${HOME}/.local/bin/mise activate zsh)"
     eval "$(${HOME}/.local/bin/mise activate --shims)"
     export MISE_LIBGIT2=false
+fi
+
+KREW=${KREW_ROOT:-$HOME/.krew}
+if [ -d "$KREW" ]; then
+    export PATH="${KREW}/bin:$PATH"
 fi

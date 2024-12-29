@@ -1,0 +1,25 @@
+#!/bin/bash
+
+log_dir="${TMPDIR:-/tmp/}"
+log_prefix="daily_exec_"
+
+hash=$(echo -n "$*" | md5sum | awk '{print $1}')
+log_file="${log_dir}/${log_prefix}${hash}.log"
+
+last_executed_date=$(cat "$log_file" 2>/dev/null || echo "0")
+current_date=$(date +%Y%m%d)
+
+if [[ "$current_date" != "$last_executed_date" ]]; then
+    "$@"
+    exit_code=$?
+    if [[ $exit_code -eq 0 ]]; then
+        echo "$current_date" > "$log_file"
+        if [[ $? -ne 0 ]]; then
+            exit 1
+        fi
+    else
+        exit $exit_code
+    fi
+else
+    echo "Command '$@' has already been executed today."
+fi

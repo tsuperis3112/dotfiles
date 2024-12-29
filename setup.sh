@@ -135,9 +135,9 @@ source "$HOME/.bashrc"
 
 echo "run post-scripts"
 
-for file in ./hooks/post-once-*.sh; do
-    __once_exec "$file"
-done
+#for file in ./hooks/post-once-*.sh; do
+#    __once_exec "$file"
+#done
 
 for file in ./hooks/post-every-*.sh; do
     __exec "$file"
