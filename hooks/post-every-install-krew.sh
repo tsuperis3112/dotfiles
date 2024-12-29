@@ -14,7 +14,7 @@ if [ ! -d "${KREW_ROOT:-$HOME/.krew}" ]; then
     ./"${KREW}" install krew
 fi
 
-export PATH="${KREW}/bin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 KREW_LIST=$(kubectl krew list)
 
@@ -28,4 +28,3 @@ for PLUGIN in `cat $(dirname $0)/krew-plugin.txt`; do
 done
 
 daily-run kubectl krew upgrade
-
