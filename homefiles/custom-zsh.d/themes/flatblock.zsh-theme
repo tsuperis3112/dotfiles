@@ -4,6 +4,8 @@ status_ok_color="%F{002}"
 status_error_color="%F{001}"
 secondary_color="%F{241}"
 
+ZSH_PYENV_VIRTUALENV=0
+
 if [ -z $FLATBLOCK_PYENV_ENABLE ]; then
   FLATBLOCK_PYENV_ENABLE=0
 fi
@@ -44,7 +46,7 @@ __statusline() {
 
   local rmargin=$COLUMNS
   local line=""
-  
+
   add_element() {
     if [ -z $1 ]; then
       return
@@ -63,7 +65,7 @@ __statusline() {
     # $1: str, $2: rawstr
     local str=$1
     local raw=${2:-$1}
-    local strcount=$(( ${#raw} + 2 )) 
+    local strcount=$(( ${#raw} + 2 ))
 
     if [ $rmargin -ge $strcount ]; then
       line+="[$str]"
