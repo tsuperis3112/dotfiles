@@ -75,3 +75,21 @@ endif
 colorscheme molokai
 vnoremap < <gv
 vnoremap > >gv
+
+function! SetFileTypeFromShebang()
+  let first_line = getline(1)
+
+  if first_line =~ '^#!.*/bin/env '
+    let filetype = substitute(first_line, '^#!.*/bin/env ', '', '')
+  elseif first_line =~ '^#!'
+    let filetype = substitute(first_line, '^#!\s*/.*\/\([^/]*\)$', '\1', '')
+  else
+    return
+  endif
+
+  if &filetype == ''
+    execute 'setfiletype ' . filetype
+  endif
+endfunction
+
+autocmd BufNewFile,BufRead * call SetFileTypeFromShebang()
