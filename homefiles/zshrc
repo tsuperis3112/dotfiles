@@ -105,6 +105,8 @@ add_plugin az azure
 add_plugin docker
 add_plugin kubectl
 
+add_plugin terraform
+
 add_plugin direnv
 
 add_plugin go golang
@@ -154,6 +156,15 @@ source $ZSH/oh-my-zsh.sh
 # Ctrl+u
 bindkey \^U backward-kill-line
 
+if [ -f "${HOME}/.local/bin/mise" ]; then
+    if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+      eval "$($HOME/.local/bin/mise activate zsh --shims)"
+    else
+      eval "$($HOME/.local/bin/mise activate zsh)"
+    fi
+    export MISE_LIBGIT2=false
+fi
+
 # custom shell scripts path
 if [ -d "${HOME}/.bin" ]; then
     export PATH="${PATH}:${HOME}/.bin"
@@ -167,12 +178,6 @@ for f in $(ls "$override_path"); do
         . "$f"
     fi
 done
-
-if [ -f "${HOME}/.local/bin/mise" ]; then
-    eval "$(${HOME}/.local/bin/mise activate zsh)"
-    eval "$(${HOME}/.local/bin/mise activate --shims)"
-    export MISE_LIBGIT2=false
-fi
 
 KREW=${KREW_ROOT:-$HOME/.krew}
 if [ -d "$KREW" ]; then
