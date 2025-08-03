@@ -109,6 +109,7 @@ add_plugin kubectl
 add_plugin terraform
 
 add_plugin direnv
+add_plugin bat zsh-bat
 
 add_plugin go golang
 add_plugin task
